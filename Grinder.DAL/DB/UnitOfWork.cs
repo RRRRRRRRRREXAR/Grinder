@@ -9,7 +9,7 @@ namespace Grinder.DAL.DB
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private GrinderContext db;
+        private readonly GrinderContext db;
         private Repository<Image> imageRepository;
         private Repository<User> userRepository;
         private Repository<Message> messageRepository;

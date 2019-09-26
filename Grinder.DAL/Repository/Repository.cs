@@ -13,8 +13,8 @@ namespace Grinder.DAL.Repository
 {
     public class Repository<T> : IRepository<T> where T : BaseEntity
     {
-        private GrinderContext db;
-        DbSet<T> dbSet;
+        private readonly GrinderContext db;
+        readonly DbSet<T> dbSet;
         public Repository(GrinderContext context)
         {
             db = context;
