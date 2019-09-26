@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 
-namespace Grinder.DAL.Entities
+namespace Grinder.BLL.DTO
 {
-    public class User : BaseEntity
+    public class UserDTO
     {
-
+        public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
@@ -17,8 +16,7 @@ namespace Grinder.DAL.Entities
         public string Other { get; set; }
         public string Interests { get; set; }
         public bool IsAnonymous { get; set; }
-        public ICollection<Image> Images { get; set; }
-        public Image ProfileImage { get; set; }
-        public bool IsOnline { get; set; }
+        public ICollection<ImageDTO> Images { get; set; }
+        public ImageDTO ProfileImage { get; set; }
     }
 }

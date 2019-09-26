@@ -12,6 +12,9 @@ namespace Grinder.DAL.DB
         private GrinderContext db;
         private Repository<Image> imageRepository;
         private Repository<User> userRepository;
+        private Repository<Message> messageRepository;
+        private Repository<Friends> friendsRepository;
+
         public UnitOfWork(GrinderContext context)
         {
             db = context;
@@ -38,12 +41,34 @@ namespace Grinder.DAL.DB
                 return userRepository;
             }
         }
+        public IRepository<Friends> Friends
+        {
+            get
+            {
+                if (friendsRepository == null)
+                {
+                    friendsRepository = new Repository<Friends>(db);
+                }
+                return friendsRepository;
+            }
+        }
+        public IRepository<Message> Messages
+        {
+            get
+            {
+                if (messageRepository == null)
+                {
+                    messageRepository = new Repository<Message>(db);
+                }
+                return messageRepository;
+            }
+        }
         public void Save()
         {
             db.SaveChanges();
         }
 
-        private bool disposed = false;
+        private bool disposed = false; 
         public virtual void Dispose(bool disposing)
         {
             if (!this.disposed)

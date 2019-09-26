@@ -9,6 +9,8 @@ namespace Grinder.DAL.Interfaces
     {
         IRepository<Image> Images { get;  }
         IRepository<User> Users { get;  }
+        IRepository<Friends> Friends { get; }
+        IRepository<Message> Messages { get; }
         void Save();
     }
 }
