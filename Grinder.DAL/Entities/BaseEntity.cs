@@ -6,10 +6,10 @@ using System.Text;
 
 namespace Grinder.DAL.Entities
 {
-    public class Image:BaseEntity
+    public class BaseEntity
     {
-        
-        public string Link { get; set; }
-        public User UserId { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
     }
 }

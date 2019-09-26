@@ -7,8 +7,8 @@ namespace Grinder.DAL.Interfaces
 {
     public interface IUnitOfWork:IDisposable
     {
-        IRepository<Image> Images { get; set; }
-        IRepository<User> Users { get; set; }
+        IRepository<Image> Images { get;  }
+        IRepository<User> Users { get;  }
         void Save();
     }
 }
