@@ -11,6 +11,7 @@ namespace Grinder.DAL.Interfaces
         IRepository<User> Users { get;  }
         IRepository<Friends> Friends { get; }
         IRepository<Message> Messages { get; }
+        IRepository<ProfileView> ProfileViews { get; }
         void Save();
     }
 }
