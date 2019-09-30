@@ -15,7 +15,7 @@ namespace Grinder.DAL.DB
         private Repository<Message> messageRepository;
         private Repository<Friends> friendsRepository;
         private Repository<ProfileView> viewRepository;
-
+        private Repository<Thumbnail> thumbnailRepository;
         public UnitOfWork(GrinderContext context)
         {
             db = context;
@@ -73,6 +73,18 @@ namespace Grinder.DAL.DB
                     viewRepository = new Repository<ProfileView>(db);
                 }
                 return viewRepository;
+            }
+        }
+
+        public IRepository<Thumbnail> Thumbnails
+        {
+            get
+            {
+                if (thumbnailRepository == null)
+                {
+                    thumbnailRepository = new Repository<Thumbnail>(db);
+                }
+                return thumbnailRepository;
             }
         }
         public void Save()

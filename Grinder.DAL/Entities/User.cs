@@ -18,7 +18,8 @@ namespace Grinder.DAL.Entities
         public string Interests { get; set; }
         public bool IsAnonymous { get; set; }
         public ICollection<Image> Images { get; set; }
-        public Image ProfileImage { get; set; }
+        public Thumbnail ProfileImage { get; set; }
         public bool IsOnline { get; set; }
+        public string Password { get; set; }
     }
 }

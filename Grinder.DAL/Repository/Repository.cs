@@ -45,6 +45,15 @@ namespace Grinder.DAL.Repository
             return await query.SingleOrDefaultAsync(predicate);
         }
 
+        public async Task<IEnumerable<T>> FindMany(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = dbSet;
+            foreach (Expression<Func<T, object>> include in includes)
+            {
+                query = query.Include(include);
+            }
+            return await query.Where(predicate).ToListAsync();
+        }
         public async Task<T> Get(int id,params Expression<Func<T,object>>[] includes)
         {
             IQueryable<T> query = dbSet;
