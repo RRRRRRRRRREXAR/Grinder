@@ -10,6 +10,6 @@ namespace Grinder.BLL.Interfaces
     {
         Task Register(UserDTO user);
         Task Login(string password,string email);
-        Task GetUserByEmail(string email);
+        Task<UserDTO> GetUserByEmail(string email);
     }
 }
