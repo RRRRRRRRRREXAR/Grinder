@@ -6,8 +6,8 @@ namespace Grinder.DAL.Entities
 {
     public class Message:BaseEntity
     {
-        public User To { get; set; }
-        public User From { get; set; }
+        public User Recivier { get; set; }
+        public User Sender { get; set; }
         public DateTime Time { get; set; }
     }
 }

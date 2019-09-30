@@ -9,7 +9,7 @@ namespace Grinder.BLL.Interfaces
     public interface IAutharizationService
     {
         Task Register(UserDTO user);
-        Task Login(string password,string email);
+        Task<UserDTO> Login(string password,string email);
         Task<UserDTO> GetUserByEmail(string email);
     }
 }
