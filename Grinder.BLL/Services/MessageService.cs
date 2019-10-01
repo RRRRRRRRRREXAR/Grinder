@@ -6,6 +6,7 @@ using Grinder.DAL.Entities;
 using Grinder.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,8 +35,6 @@ namespace Grinder.BLL.Services
         {
             var mapper = new Mapper(config);
             var AllMessages = await unit.Messages.FindMany(d=>d.Sender==mapper.Map<User>(owner) || d.Recivier == mapper.Map<User>(owner));
-            AllMessages.
-
         }
 
         public async Task SendMessage(MessageDTO message)
@@ -43,6 +42,15 @@ namespace Grinder.BLL.Services
             var mapper = new Mapper(config);
             await unit.Messages.Create(mapper.Map<Message>(message));
             unit.Save();
+        }
+
+        private List<List<MessageDTO>> SortMessages(List<MessageDTO> unsortedMessages)
+        {
+            List<List<MessageDTO>> sortedMessages = new List<List<MessageDTO>>();
+            foreach (var message in unsortedMessages.GroupBy(x => x.Recivier, x => x.Sender))
+            {
+                sortedMessages.Add(message);
+            }
         }
     }
 }
