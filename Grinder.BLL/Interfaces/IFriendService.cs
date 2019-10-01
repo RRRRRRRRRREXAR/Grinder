@@ -12,6 +12,6 @@ namespace Grinder.BLL.Interfaces
         Task AcceptInvite(FriendsDTO friends);
         Task DeclineInvite(FriendsDTO friends);
         Task Block(FriendsDTO friends);
-        Task<IEnumerable<UserDTO>> GetFriends(UserDTO owner);
+        Task<IEnumerable<FriendsDTO>> GetFriends(UserDTO owner);
     }
 }

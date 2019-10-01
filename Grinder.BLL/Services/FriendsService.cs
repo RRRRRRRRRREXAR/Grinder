@@ -55,10 +55,11 @@ namespace Grinder.BLL.Services
             return updateTask;
         }
 
-        public Task<IEnumerable<UserDTO>> GetFriends(UserDTO owner)
+        public async Task<IEnumerable<FriendsDTO>> GetFriends(UserDTO owner)
         {
             var mapper = new Mapper(config);
-            unit.Friends.FindMany();
+            IEnumerable<FriendsDTO> friends= mapper.Map<IEnumerable<FriendsDTO>>(await unit.Friends.FindMany(d=>d.User1 == mapper.Map<User>(owner)));
+            return friends;
         }
 
         public Task SendInvite(UserDTO sender, UserDTO recivier)
