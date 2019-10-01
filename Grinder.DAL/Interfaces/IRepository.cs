@@ -14,7 +14,7 @@ namespace Grinder.DAL.Interfaces
         Task Delete(int id);
         Task<IEnumerable<T>> GetAll(params Expression<Func<T,object>>[] includes);
         Task<T> Find(Expression<Func<T,bool>> predicate,params Expression<Func<T, object>>[] includes);
-        Task<IEnumerable<T>> FindMany(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes);
+        Task<List<T>> FindMany(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes);
         Task<T> Get(int id, params Expression<Func<T, object>>[] includes);
     }
 }

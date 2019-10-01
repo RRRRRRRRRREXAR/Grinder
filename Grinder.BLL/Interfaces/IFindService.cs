@@ -10,6 +10,6 @@ namespace Grinder.BLL.Interfaces
 {
     public interface IFindService
     {
-        Task<UserDTO> GetUsersBy(Expression<Func<User,bool>> predicate);
+        Task<IEnumerable<UserDTO>> GetUsersBy(Expression<Func<User,bool>> predicate);
     }
 }

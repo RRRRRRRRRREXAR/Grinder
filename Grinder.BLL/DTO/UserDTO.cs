@@ -17,7 +17,8 @@ namespace Grinder.BLL.DTO
         public string Interests { get; set; }
         public bool IsAnonymous { get; set; }
         public ICollection<ImageDTO> Images { get; set; }
-        public ImageDTO ProfileImage { get; set; }
+        public ThumbnailDTO ProfileImage { get; set; }
         public string Password { get; set; }
+        public string Role { get; set; }
     }
 }

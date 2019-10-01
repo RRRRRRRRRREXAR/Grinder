@@ -8,8 +8,8 @@ namespace Grinder.BLL.Interfaces
 {
     public interface IDataService
     {
-        Task GetViews(int id);
-        Task GetReplyRate(int id);
+        Task<int> GetViews(int id);
+        Task<double> GetReplyRate(int id);
         Task AddView(UserDTO user,UserDTO profile);
     }
 }

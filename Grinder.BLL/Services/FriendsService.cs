@@ -18,6 +18,11 @@ namespace Grinder.BLL.Services
         {
             mc.AddProfile(new UserProfile());
         });
+        public FriendService(IUnitOfWork unit)
+        {
+            this.unit = unit;
+        }
+
         public Task AcceptInvite(FriendsDTO friends)
         {
             var mapper = new Mapper(config);
@@ -62,9 +67,17 @@ namespace Grinder.BLL.Services
             return friends;
         }
 
-        public Task SendInvite(UserDTO sender, UserDTO recivier)
+        public async Task SendInvite(UserDTO sender, UserDTO recivier)
         {
-            throw new NotImplementedException();
+            var mapper = new Mapper(config);
+            FriendsDTO friends = new FriendsDTO
+            {
+                Status = "Pending",
+                User1=sender,
+                User2=recivier
+            };
+           await unit.Friends.Create(mapper.Map<Friends>(friends));
+            unit.Save();
         }
     }
 }
