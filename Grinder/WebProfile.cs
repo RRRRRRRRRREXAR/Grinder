@@ -1,26 +1,18 @@
 ﻿using AutoMapper;
 using Grinder.BLL.DTO;
-using Grinder.DAL.Entities;
+using Grinder.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Grinder.BLL.MapProfile
+namespace Grinder
 {
-    public class UserProfile:Profile
+    public class WebProfile:Profile
     {
-        public UserProfile()
+        public WebProfile()
         {
-            CreateMap<UserDTO, User>()
-                .ForMember(
-                dest=>dest.ProfileImage,
-                opt=>opt.MapFrom(src=>src.ProfileImage)
-                )
-                .ForMember(
-                dest=>dest.Images,
-                opt=>opt.MapFrom(src=>src.Images)
-                );
-            CreateMap<User, UserDTO>()
+            CreateMap<UserDTO, UserModel>()
                 .ForMember(
                 dest => dest.ProfileImage,
                 opt => opt.MapFrom(src => src.ProfileImage)
@@ -29,26 +21,28 @@ namespace Grinder.BLL.MapProfile
                 dest => dest.Images,
                 opt => opt.MapFrom(src => src.Images)
                 );
-            CreateMap<Image, ImageDTO>().
-                ForMember(
-                dest=>dest.UserId,
-                opt=>opt.MapFrom(src=>src.UserId)
+            CreateMap<UserModel, UserDTO>()
+                .ForMember(
+                dest => dest.ProfileImage,
+                opt => opt.MapFrom(src => src.ProfileImage)
+                )
+                .ForMember(
+                dest => dest.Images,
+                opt => opt.MapFrom(src => src.Images)
                 );
-            CreateMap<ImageDTO, Image>().
+            CreateMap<RegistrationModel, UserDTO>();
+            CreateMap<UserDTO, RegistrationModel>();
+            CreateMap<ImageModel, ImageDTO>().
                 ForMember(
                 dest => dest.UserId,
                 opt => opt.MapFrom(src => src.UserId)
                 );
-            CreateMap<Friends, FriendsDTO>()
-                .ForMember(
-                dest=>dest.User1,
-                opt=>opt.MapFrom(src=>src.User1)
-                )
-                .ForMember(
-                dest=>dest.User2,
-                opt=>opt.MapFrom(src=>src.User2)
+            CreateMap<ImageDTO, ImageModel>().
+                ForMember(
+                dest => dest.UserId,
+                opt => opt.MapFrom(src => src.UserId)
                 );
-            CreateMap<FriendsDTO, Friends>()
+            CreateMap<FriendsModel, FriendsDTO>()
                 .ForMember(
                 dest => dest.User1,
                 opt => opt.MapFrom(src => src.User1)
@@ -57,40 +51,49 @@ namespace Grinder.BLL.MapProfile
                 dest => dest.User2,
                 opt => opt.MapFrom(src => src.User2)
                 );
-            CreateMap<Message, MessageDTO>().
+            CreateMap<FriendsDTO, FriendsModel>()
+                .ForMember(
+                dest => dest.User1,
+                opt => opt.MapFrom(src => src.User1)
+                )
+                .ForMember(
+                dest => dest.User2,
+                opt => opt.MapFrom(src => src.User2)
+                );
+            CreateMap<MessageModel, MessageDTO>().
                 ForMember(
                 des => des.Recivier,
                 opt => opt.MapFrom(src => src.Recivier)).
                 ForMember(
                 dest => dest.Sender,
                 opt => opt.MapFrom(src => src.Sender));
-            CreateMap<MessageDTO, Message>().
+            CreateMap<MessageDTO, MessageModel>().
                 ForMember(
                 des => des.Recivier,
                 opt => opt.MapFrom(src => src.Recivier)).
                 ForMember(
                 dest => dest.Sender,
                 opt => opt.MapFrom(src => src.Sender));
-            CreateMap<Thumbnail, ThumbnailDTO>().
+            CreateMap<ThumbnailModel, ThumbnailDTO>().
                 ForMember(
                 dest => dest.UserId,
                 opt => opt.MapFrom(src => src.UserId)
                 );
-            CreateMap<ThumbnailDTO, Thumbnail>().
+            CreateMap<ThumbnailDTO, ThumbnailModel>().
                 ForMember(
                 dest => dest.UserId,
                 opt => opt.MapFrom(src => src.UserId)
                 );
-            CreateMap<ProfileView, ProfileViewDTO>().
+            CreateMap<ProfileViewModel, ProfileViewDTO>().
                 ForMember(
                 dest => dest.Profile,
                 opt => opt.MapFrom(src => src.Profile)
                 ).
                 ForMember(
                 dest => dest.Viewer,
-                opt => opt.MapFrom(src=>src.Viewer)
+                opt => opt.MapFrom(src => src.Viewer)
                 );
-            CreateMap<ProfileViewDTO, ProfileView>().
+            CreateMap<ProfileViewDTO, ProfileViewModel>().
                 ForMember(
                 dest => dest.Profile,
                 opt => opt.MapFrom(src => src.Profile)

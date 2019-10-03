@@ -31,10 +31,11 @@ namespace Grinder.BLL.Services
         }
         //TODO 
         //THIS PLS
-        public async Task<IEnumerable<MessageDTO>> GetConversations(UserDTO owner)
+        public async Task<Dictionary<string,List<MessageDTO>>> GetConversations(UserDTO owner)
         {
             var mapper = new Mapper(config);
             var AllMessages = await unit.Messages.FindMany(d=>d.Sender==mapper.Map<User>(owner) || d.Recivier == mapper.Map<User>(owner));
+            return SortMessages(mapper.Map<List<MessageDTO>>(AllMessages),owner);
         }
 
         public async Task SendMessage(MessageDTO message)
@@ -44,13 +45,40 @@ namespace Grinder.BLL.Services
             unit.Save();
         }
 
-        private List<List<MessageDTO>> SortMessages(List<MessageDTO> unsortedMessages)
+        private Dictionary<string,List<MessageDTO>> SortMessages(List<MessageDTO> unsortedMessages,UserDTO owner)
         {
-            List<List<MessageDTO>> sortedMessages = new List<List<MessageDTO>>();
-            foreach (var message in unsortedMessages.GroupBy(x => x.Recivier, x => x.Sender))
+            Dictionary<string, List<MessageDTO>> sortedMessages = new Dictionary<string, List<MessageDTO>>();
+            foreach (var message in unsortedMessages)
             {
-                sortedMessages.Add(message);
+                if (message.Recivier!= owner)
+                {
+                    if (sortedMessages.ContainsKey(message.Recivier.FirstName))
+                    {
+                        sortedMessages[message.Recivier.FirstName].Add(message);
+                    }
+                    else
+                    {
+                        sortedMessages.Add(message.Recivier.FirstName, new List<MessageDTO>());
+                        sortedMessages[message.Recivier.FirstName].Add(message);
+                    }
+                }
+                else
+                {
+                    if (message.Sender!=owner)
+                    {
+                        if(sortedMessages.ContainsKey(message.Sender.FirstName))
+                        {
+                            sortedMessages[message.Sender.FirstName].Add(message);
+                        }
+                        else
+                        {
+                            sortedMessages.Add(message.Sender.FirstName, new List<MessageDTO>());
+                            sortedMessages[message.Sender.FirstName].Add(message);
+                        }
+                    }
+                }
             }
+            return sortedMessages;
         }
     }
 }

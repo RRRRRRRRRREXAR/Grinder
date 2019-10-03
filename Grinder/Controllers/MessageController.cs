@@ -23,11 +23,6 @@ namespace Grinder.Controllers
             this.mapper = mapper;
         }
 
-        [HttpGet]
-        [Authorize]
-        public async Task<IEnumerable<MessageModel>> Get()
-        {
-            messageService.GetConversations();
-        }
+
     }
 }

@@ -16,6 +16,7 @@ namespace Grinder.DAL.DB
         private Repository<Friends> friendsRepository;
         private Repository<ProfileView> viewRepository;
         private Repository<Thumbnail> thumbnailRepository;
+        private Repository<Notification> notificationRepository;
         public UnitOfWork(GrinderContext context)
         {
             db = context;
@@ -85,6 +86,17 @@ namespace Grinder.DAL.DB
                     thumbnailRepository = new Repository<Thumbnail>(db);
                 }
                 return thumbnailRepository;
+            }
+        }
+        public IRepository<Notification> Notifications
+        {
+            get
+            {
+                if (notificationRepository == null)
+                {
+                    notificationRepository = new Repository<Notification>(db);
+                }
+                return notificationRepository;
             }
         }
         public void Save()

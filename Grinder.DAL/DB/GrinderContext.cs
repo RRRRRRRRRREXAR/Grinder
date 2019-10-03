@@ -10,6 +10,11 @@ namespace Grinder.DAL.DB
     {
         DbSet<Image> Images { get; set; }
         DbSet<User> Users { get; set; }
+        DbSet<Thumbnail> Thumbnails { get; set; }
+        DbSet<Friends> Friends { get; set; }
+        DbSet<Message> Messages { get; set; }
+        DbSet<Notification> Notifications { get; set; }
+        DbSet<ProfileView> ProfileViews { get; set; }
         public GrinderContext(DbContextOptions<GrinderContext> options):base(options)
         {
             Database.EnsureCreated();

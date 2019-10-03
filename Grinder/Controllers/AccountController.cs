@@ -59,7 +59,7 @@ namespace Grinder.Controllers
 
         }
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]UserModel user)
+        public async Task<IActionResult> Post([FromBody]RegistrationModel user)
         {
             if (!ModelState.IsValid)
             {
