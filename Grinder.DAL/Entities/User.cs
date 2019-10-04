@@ -19,8 +19,6 @@ namespace Grinder.DAL.Entities
         public bool IsAnonymous { get; set; }
         public ICollection<Image> Images { get; set; }
         public Thumbnail ProfileImage { get; set; }
-        [ForeignKey("ProfileImage")]
-        public int ProfileImageFK { get; set; }
         public bool IsOnline { get; set; }
         public string Password { get; set; }
         public string Role { get; set; }
