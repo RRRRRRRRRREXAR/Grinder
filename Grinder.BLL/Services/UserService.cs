@@ -26,43 +26,27 @@ namespace Grinder.BLL.Services
         {
             this.unit = unit;
         }
-        public async Task UploadImages(IHostingEnvironment _appEnvironment, IFormFile[] images, UserDTO user)
+
+        public async Task<UserDTO> GetUserByEmail(string Email)
+        {
+            var mapper =new Mapper(config);
+            return mapper.Map<UserDTO>(await unit.Users.Find(d=>d.Email==Email));
+        }
+
+        public async Task UpdateProfile(UserDTO user)
         {
             var mapper = new Mapper(config);
-            foreach(var image in images)
+            if (user.Images==null&&user.ProfileImage==null)
             {
-               await UploadImage(_appEnvironment, image, user);
+               var tempUser= await unit.Users.Get(user.Id);
+                user.Images = mapper.Map<ICollection<ImageDTO>>(tempUser.Images);
+                user.ProfileImage = mapper.Map<ThumbnailDTO>(tempUser.ProfileImage);
             }
-            unit.Save();
-        }
-
-        public async Task UploadProfilePicture(IHostingEnvironment _appEnvironment, IFormFile image, UserDTO user)
-        {
-            var mapper = new Mapper(config);
-            await UploadImage(_appEnvironment,image,user);
-        }
-
-        public Task UpdateProfile(UserDTO user)
-        {
-            var mapper = new Mapper(config);
-            Task updateTask = Task.Run(() =>
+            await Task.Run(() =>
             {
                 unit.Users.Update(mapper.Map<User>(user));
                 unit.Save();
             });
-            return updateTask;
-        }
-        private async Task UploadImage(IHostingEnvironment _appEnvironment, IFormFile image, UserDTO user)
-        {
-            var mapper = new Mapper(config);
-            var fileName = ContentDispositionHeaderValue.Parse(image.ContentDisposition).FileName.Trim('"');
-            string path = "/Images/" + fileName;
-            using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
-            {
-                await image.CopyToAsync(fileStream);
-            }
-            ImageDTO uploadedImage = new ImageDTO { Link = "https://localhost:44327" + path, UserId=user };
-            await unit.Images.Create(mapper.Map<Image>(uploadedImage));
         }
     }
 }

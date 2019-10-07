@@ -10,8 +10,7 @@ namespace Grinder.BLL.Interfaces
 {
     public interface IUserService
     {
-        Task UploadImages(IHostingEnvironment _appEnvironment, IFormFile[] images, UserDTO user);
-        Task UploadProfilePicture(IHostingEnvironment _appEnvironment, IFormFile image, UserDTO user);
+        Task<UserDTO> GetUserByEmail(string Email);
         Task UpdateProfile(UserDTO user);
     }
 }

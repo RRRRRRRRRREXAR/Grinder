@@ -45,6 +45,23 @@ namespace Grinder.BLL.Services
             unit.Save();
         }
 
+        public async Task UpdateProfilePicture(IHostingEnvironment _appEnviroment, IFormFile newImage, ThumbnailDTO oldImage)
+        {
+            var mapper = new Mapper(config);
+            var imgName = oldImage.Link.Split('/')[4];
+            File.Delete(_appEnviroment.WebRootPath + "\\Images\\" + imgName);
+            var fileName = ContentDispositionHeaderValue.Parse(newImage.ContentDisposition).FileName.Trim('"');
+            string path = "/Images/" + fileName;
+            using (var fileStream = new FileStream(_appEnviroment.WebRootPath + path, FileMode.Create))
+            {
+                await newImage.CopyToAsync(fileStream);
+            }
+            oldImage.Link = "https://localhost:44327" + path;
+            unit.Thumbnails.Update(mapper.Map<Thumbnail>(oldImage));
+            unit.Save();
+            
+        }
+
         public async Task UploadImages(IHostingEnvironment _appEnvironment, IFormFile[] images, UserDTO user)
         {
             var mapper = new Mapper(config);
@@ -58,7 +75,15 @@ namespace Grinder.BLL.Services
         public async Task UploadProfilePicture(IHostingEnvironment _appEnvironment, IFormFile image, UserDTO user)
         {
             var mapper = new Mapper(config);
-            await UploadImage(_appEnvironment, image, user);
+            var fileName = ContentDispositionHeaderValue.Parse(image.ContentDisposition).FileName.Trim('"');
+            string path = "/Images/" + fileName;
+            using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+            {
+                await image.CopyToAsync(fileStream);
+            }
+            ThumbnailDTO uploadedImage = new ThumbnailDTO { Link = "https://localhost:44327" + path, UserId = user };
+            await unit.Thumbnails.Create(mapper.Map<Thumbnail>(uploadedImage));
+            unit.Save();
         }
 
        

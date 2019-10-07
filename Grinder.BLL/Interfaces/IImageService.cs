@@ -14,5 +14,6 @@ namespace Grinder.BLL.Interfaces
         Task UploadProfilePicture(IHostingEnvironment _appEnvironment, IFormFile image, UserDTO user);
         Task DeleteImage(int id, IHostingEnvironment _appEnvironment);
         Task DeleteProfilePicture(int id, IHostingEnvironment _appEnvironment);
+        Task UpdateProfilePicture(IHostingEnvironment _appEnviroment, IFormFile newImage, ThumbnailDTO oldImage);
     }
 }
