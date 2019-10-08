@@ -30,7 +30,9 @@ namespace Grinder.BLL.Services
         public async Task<UserDTO> GetUserByEmail(string Email)
         {
             var mapper =new Mapper(config);
-            return mapper.Map<UserDTO>(await unit.Users.Find(d=>d.Email==Email));
+            var user = await unit.Users.Find(d => d.Email == Email);
+            user.Password = null;
+            return mapper.Map<UserDTO>(user);
         }
 
         public async Task UpdateProfile(UserDTO user)

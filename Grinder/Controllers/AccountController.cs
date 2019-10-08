@@ -8,6 +8,7 @@ using AutoMapper;
 using Grinder.BLL.DTO;
 using Grinder.BLL.Interfaces;
 using Grinder.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -21,11 +22,12 @@ namespace Grinder.Controllers
     {
         IAutharizationService autorizeService;
         IMapper mapper;
-
-        public AccountController(IAutharizationService autharizationService,IMapper mapper)
+        IUserService userService;
+        public AccountController(IAutharizationService autharizationService,IUserService userService,IMapper mapper)
         {
             this.autorizeService = autharizationService;
             this.mapper = mapper;
+            this.userService = userService;
         }
 
         [HttpPost("/token")]
@@ -67,6 +69,12 @@ namespace Grinder.Controllers
             }
             await autorizeService.Register(mapper.Map<UserDTO>(user));
             return Ok();
+        }
+        [Authorize]
+        [HttpGet]
+        public async Task<UserModel> Get()
+        {
+            return mapper.Map<UserModel>(await userService.GetUserByEmail(User.Identity.Name));
         }
         private ClaimsIdentity GetIdentity(string username,string password)
         {

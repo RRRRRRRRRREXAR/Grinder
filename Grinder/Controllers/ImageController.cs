@@ -35,13 +35,13 @@ namespace Grinder.Controllers
             await imageService.UploadImages(hostingEnviroment, images, await userService.GetUserByEmail(User.Identity.Name));
             return Ok();
         }
-        [HttpPost("uploadprofilepicture")]
+        [HttpPost("/uploadprofilepicture")]
         public async Task<IActionResult> UploadProfilePicture(IFormFile image)
         {
             await imageService.UploadProfilePicture(hostingEnviroment, image, await userService.GetUserByEmail(User.Identity.Name));
             return Ok();
         }
-        [HttpPost("updateprofilepicture")]
+        [HttpPost("/updateprofilepicture")]
         public async Task<IActionResult> UpdateProfilePicture(ThumbnailModel profilePicture,IFormFile image)
         {
             await imageService.UpdateProfilePicture(hostingEnviroment, image, mapper.Map<ThumbnailDTO>(profilePicture));

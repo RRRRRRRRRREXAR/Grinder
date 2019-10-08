@@ -81,7 +81,7 @@ namespace Grinder
             app.UseHttpsRedirection();
             app.UseCors(options=>options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

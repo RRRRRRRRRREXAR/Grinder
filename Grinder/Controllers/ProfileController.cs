@@ -6,6 +6,7 @@ using AutoMapper;
 using Grinder.BLL.DTO;
 using Grinder.BLL.Interfaces;
 using Grinder.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +14,7 @@ namespace Grinder.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class ProfileController : ControllerBase
     {
         IMapper mapper;
@@ -23,11 +25,20 @@ namespace Grinder.Controllers
             this.userService = userService;
             this.mapper = mapper;
         }
-
+        [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Post(RegistrationModel updateProfile)
         {
             await userService.UpdateProfile(mapper.Map<UserDTO>(updateProfile));
             return Ok();
         }
+        [HttpGet]
+        [Authorize]
+        public async Task<UserModel> Get(string Email)
+        {
+           return mapper.Map<UserModel>(await userService.GetUserByEmail(Email));
+        }
+
+        
     }
 }
