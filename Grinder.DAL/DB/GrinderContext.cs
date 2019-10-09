@@ -22,8 +22,11 @@ namespace Grinder.DAL.DB
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Thumbnail>()
-                .HasKey(c => c.Id);
+            modelBuilder.Entity<User>()
+                .HasOne(s => s.ProfileImage)
+                .WithOne(b => b.UserId)
+                .HasForeignKey<User>(s => s.ProfilePictureId);
+                
         }
     }
 }
