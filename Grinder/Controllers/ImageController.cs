@@ -29,24 +29,29 @@ namespace Grinder.Controllers
             this.hostingEnviroment = hostingEnviroment;
             this.userService = userService;
         }
-
+        [Authorize]
+        [HttpPost]
         public async Task<IActionResult> Post(IFormFile[] images)
         {
-            await imageService.UploadImages(hostingEnviroment, images, await userService.GetUserByEmail(User.Identity.Name));
+            await imageService.UploadImages(hostingEnviroment, images, User.Identity.Name);
             return Ok();
         }
+        [Authorize]
         [HttpPost("/uploadprofilepicture")]
         public async Task<IActionResult> UploadProfilePicture(IFormFile image)
         {
-            await imageService.UploadProfilePicture(hostingEnviroment, image, await userService.GetUserByEmail(User.Identity.Name));
+            await imageService.UploadProfilePicture(hostingEnviroment, image,User.Identity.Name);
             return Ok();
         }
+        [Authorize]
         [HttpPost("/updateprofilepicture")]
         public async Task<IActionResult> UpdateProfilePicture(ThumbnailModel profilePicture,IFormFile image)
         {
-            await imageService.UpdateProfilePicture(hostingEnviroment, image, mapper.Map<ThumbnailDTO>(profilePicture));
+            await imageService.UpdateProfilePicture(hostingEnviroment, image, mapper.Map<ThumbnailDTO>(profilePicture), User.Identity.Name);
             return Ok();
         }
+        [Authorize]
+        [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
             await imageService.DeleteImage(id, hostingEnviroment);

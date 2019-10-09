@@ -34,16 +34,29 @@ namespace Grinder.BLL.Services
             user.Password = null;
             return mapper.Map<UserDTO>(user);
         }
-
+        /// <summary>
+        /// user.Email && and password = null
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public async Task UpdateProfile(UserDTO user)
         {
             var mapper = new Mapper(config);
-            if (user.Images==null&&user.ProfileImage==null)
+            if (user.Images.Count==0&&user.ProfileImage==null)
             {
                var tempUser= await unit.Users.Get(user.Id);
-                user.Images = mapper.Map<ICollection<ImageDTO>>(tempUser.Images);
+                if (tempUser.Images==null)
+                {
+                    user.Images = mapper.Map<ICollection<ImageDTO>>(tempUser.Images);
+                }
                 user.ProfileImage = mapper.Map<ThumbnailDTO>(tempUser.ProfileImage);
+                if (user.Password==null)
+                {
+                    user.Password = tempUser.Password;
+                }
+                user.Email = tempUser.Email;
             }
+            
             await Task.Run(() =>
             {
                 unit.Users.Update(mapper.Map<User>(user));

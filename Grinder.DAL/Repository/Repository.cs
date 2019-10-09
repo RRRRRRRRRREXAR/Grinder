@@ -61,7 +61,7 @@ namespace Grinder.DAL.Repository
             {
                 query = query.Include(include);
             }
-            return await query.SingleOrDefaultAsync(e=>e.Id==id);
+            return await query.AsNoTracking().SingleOrDefaultAsync(e=>e.Id==id);
         }
 
         public async Task<IEnumerable<T>> GetAll(params Expression<Func<T, object>>[] includes)

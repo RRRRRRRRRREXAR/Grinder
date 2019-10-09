@@ -19,5 +19,11 @@ namespace Grinder.DAL.DB
         {
             Database.EnsureCreated();
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Thumbnail>()
+                .HasKey(c => c.Id);
+        }
     }
 }

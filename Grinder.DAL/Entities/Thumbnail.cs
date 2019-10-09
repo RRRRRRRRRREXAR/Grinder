@@ -7,6 +7,6 @@ namespace Grinder.DAL.Entities
     public class Thumbnail:BaseEntity
     {
         public string Link { get; set; }
-        public ICollection<User> UserId { get; set; }
+        public User UserId { get; set; }
     }
 }

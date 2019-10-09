@@ -27,7 +27,7 @@ namespace Grinder.Controllers
         }
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Post(RegistrationModel updateProfile)
+        public async Task<IActionResult> Post(UserModel updateProfile)
         {
             await userService.UpdateProfile(mapper.Map<UserDTO>(updateProfile));
             return Ok();

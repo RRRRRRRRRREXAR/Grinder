@@ -45,7 +45,7 @@ namespace Grinder.BLL.Services
             unit.Save();
         }
 
-        public async Task UpdateProfilePicture(IHostingEnvironment _appEnviroment, IFormFile newImage, ThumbnailDTO oldImage)
+        public async Task UpdateProfilePicture(IHostingEnvironment _appEnviroment, IFormFile newImage, ThumbnailDTO oldImage,string user)
         {
             var mapper = new Mapper(config);
             var imgName = oldImage.Link.Split('/')[4];
@@ -56,23 +56,24 @@ namespace Grinder.BLL.Services
             {
                 await newImage.CopyToAsync(fileStream);
             }
-            oldImage.Link = "https://localhost:44327" + path;
+            oldImage.Link = "https://localhost:44340" + path;
             unit.Thumbnails.Update(mapper.Map<Thumbnail>(oldImage));
             unit.Save();
             
         }
 
-        public async Task UploadImages(IHostingEnvironment _appEnvironment, IFormFile[] images, UserDTO user)
+        public async Task UploadImages(IHostingEnvironment _appEnvironment, IFormFile[] images, string Email)
         {
             var mapper = new Mapper(config);
+            var tempUser = await unit.Users.Find(d => d.Email == Email);
             foreach (var image in images)
             {
-                await UploadImage(_appEnvironment, image, user);
+                await UploadImage(_appEnvironment, image, tempUser);
             }
             unit.Save();
         }
 
-        public async Task UploadProfilePicture(IHostingEnvironment _appEnvironment, IFormFile image, UserDTO user)
+        public async Task UploadProfilePicture(IHostingEnvironment _appEnvironment, IFormFile image, string Email)
         {
             var mapper = new Mapper(config);
             var fileName = ContentDispositionHeaderValue.Parse(image.ContentDisposition).FileName.Trim('"');
@@ -81,13 +82,16 @@ namespace Grinder.BLL.Services
             {
                 await image.CopyToAsync(fileStream);
             }
-            ThumbnailDTO uploadedImage = new ThumbnailDTO { Link = "https://localhost:44327" + path, UserId = user };
-            await unit.Thumbnails.Create(mapper.Map<Thumbnail>(uploadedImage));
+            var user = await unit.Users.Find(d=>d.Email==Email);
+            ThumbnailDTO uploadedImage = new ThumbnailDTO { Link = "https://localhost:44340" + path };
+            Thumbnail pic = mapper.Map<Thumbnail>(uploadedImage);
+            pic.UserId = user;
+            await unit.Thumbnails.Create(pic);
             unit.Save();
         }
 
        
-        private async Task UploadImage(IHostingEnvironment _appEnvironment, IFormFile image, UserDTO user)
+        private async Task UploadImage(IHostingEnvironment _appEnvironment, IFormFile image, User user)
         {
             var mapper = new Mapper(config);
             var fileName = ContentDispositionHeaderValue.Parse(image.ContentDisposition).FileName.Trim('"');
@@ -96,8 +100,8 @@ namespace Grinder.BLL.Services
             {
                 await image.CopyToAsync(fileStream);
             }
-            ImageDTO uploadedImage = new ImageDTO { Link = "https://localhost:44327" + path, UserId = user };
-            await unit.Images.Create(mapper.Map<Image>(uploadedImage));
+            Image uploadedImage = new Image { Link = "https://localhost:44340" + path, UserId = user};
+            await unit.Images.Create(uploadedImage);
         }
     }
 }
