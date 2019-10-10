@@ -46,7 +46,7 @@ namespace Grinder.BLL.Services
             var mapper = new Mapper(config);
             user.Role = "User";
             user.Password =ComputeHash(user.Password,"SHA512",null);
-            user.ProfileImage = new ThumbnailDTO { Link = @"C:\Images\default.img", UserId=user};
+            user.ProfileImage = new ThumbnailDTO { Link = @"https://localhost:44340\Images\default.jpeg", UserId=user};
             await unit.Users.Create(mapper.Map<User>(user));
             unit.Save();
         }

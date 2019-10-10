@@ -10,10 +10,11 @@ namespace Grinder.BLL.Interfaces
 {
     public interface IImageService
     {
-        Task UploadImages(IHostingEnvironment _appEnvironment, IFormFile[] images, string user);
-        Task UploadProfilePicture(IHostingEnvironment _appEnvironment, IFormFile image, string user);
-        Task DeleteImage(int id, IHostingEnvironment _appEnvironment);
-        Task DeleteProfilePicture(int id, IHostingEnvironment _appEnvironment);
-        Task UpdateProfilePicture(IHostingEnvironment _appEnviroment, IFormFile newImage, ThumbnailDTO oldImage, string user);
+        Task<IEnumerable<ImageDTO>> GetImages(UserDTO user);
+        Task UploadImage(string _appEnvironment, IFormFile image, string user);
+        Task UploadProfilePicture(string _appEnvironment, IFormFile image, string user);
+        Task DeleteImage(int id, string _appEnvironment);
+        Task DeleteProfilePicture(int id, string _appEnvironment);
+        Task UpdateProfilePicture(string _appEnviroment, IFormFile newImage, ThumbnailDTO oldImage, string user);
     }
 }

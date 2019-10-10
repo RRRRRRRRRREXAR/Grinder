@@ -30,8 +30,32 @@ namespace Grinder
                 dest => dest.Images,
                 opt => opt.MapFrom(src => src.Images)
                 );
+            CreateMap<UserDTO, ProfileModel>()
+                .ForMember(
+                dest => dest.ProfileImage,
+                opt => opt.MapFrom(src => src.ProfileImage)
+                )
+                .ForMember(
+                dest => dest.Images,
+                opt => opt.MapFrom(src => src.Images)
+                );
+            CreateMap<ProfileModel, UserDTO>()
+                .ForMember(
+                dest => dest.ProfileImage,
+                opt => opt.MapFrom(src => src.ProfileImage)
+                )
+                .ForMember(
+                dest => dest.Images,
+                opt => opt.MapFrom(src => src.Images)
+                );
+            CreateMap<ProfileThumbnail, ThumbnailDTO>();
+            CreateMap<ThumbnailDTO, ProfileThumbnail>();
+            CreateMap<ProfileImage, ImageDTO>();
+            CreateMap<ImageDTO, ProfileImage>();
             CreateMap<RegistrationModel, UserDTO>();
             CreateMap<UserDTO, RegistrationModel>();
+            CreateMap<UpdateProfileModel, UserDTO>();
+            CreateMap<UserDTO, UpdateProfileModel>();
             CreateMap<ImageModel, ImageDTO>().
                 ForMember(
                 dest => dest.UserId,

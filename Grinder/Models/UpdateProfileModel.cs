@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Grinder.Models
 {
-    public class ProfileModel
+    public class UpdateProfileModel
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
@@ -17,8 +17,6 @@ namespace Grinder.Models
         public string Other { get; set; }
         public string Interests { get; set; }
         public bool IsAnonymous { get; set; }
-        public ICollection<ProfileImage> Images { get; set; }
-        public ProfileThumbnail ProfileImage { get; set; }
         public string Password { get; set; }
         public string Role { get; set; }
     }

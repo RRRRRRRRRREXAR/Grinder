@@ -21,8 +21,8 @@ namespace Grinder.Controllers
         IMapper mapper;
         IImageService imageService;
         IUserService userService;
-        IHostingEnvironment hostingEnviroment;
-        public ImageController(IMapper mapper,IImageService imageService,IHostingEnvironment hostingEnviroment,IUserService userService)
+        IWebHostEnvironment hostingEnviroment;
+        public ImageController(IMapper mapper,IImageService imageService, IWebHostEnvironment hostingEnviroment,IUserService userService)
         {
             this.imageService = imageService;
             this.mapper = mapper;
@@ -30,31 +30,37 @@ namespace Grinder.Controllers
             this.userService = userService;
         }
         [Authorize]
-        [HttpPost]
-        public async Task<IActionResult> Post(IFormFile[] images)
+        [HttpGet]
+        public async Task<IEnumerable<ProfileImage>> Get()
         {
-            await imageService.UploadImages(hostingEnviroment, images, User.Identity.Name);
+            return mapper.Map<IEnumerable<ProfileImage>>(await imageService.GetImages(await userService.GetUserByEmail(User.Identity.Name)));
+        }
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Post(IFormFile image)
+        {
+            await imageService.UploadImage(hostingEnviroment.ContentRootPath, image, User.Identity.Name);
             return Ok();
         }
         [Authorize]
         [HttpPost("/uploadprofilepicture")]
         public async Task<IActionResult> UploadProfilePicture(IFormFile image)
         {
-            await imageService.UploadProfilePicture(hostingEnviroment, image,User.Identity.Name);
+            await imageService.UploadProfilePicture(hostingEnviroment.ContentRootPath, image,User.Identity.Name);
             return Ok();
         }
         [Authorize]
         [HttpPost("/updateprofilepicture")]
         public async Task<IActionResult> UpdateProfilePicture(ThumbnailModel profilePicture,IFormFile image)
         {
-            await imageService.UpdateProfilePicture(hostingEnviroment, image, mapper.Map<ThumbnailDTO>(profilePicture), User.Identity.Name);
+            await imageService.UpdateProfilePicture(hostingEnviroment.ContentRootPath, image, mapper.Map<ThumbnailDTO>(profilePicture), User.Identity.Name);
             return Ok();
         }
         [Authorize]
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
-            await imageService.DeleteImage(id, hostingEnviroment);
+            await imageService.DeleteImage(id, hostingEnviroment.ContentRootPath);
             return Ok();
         }
     }

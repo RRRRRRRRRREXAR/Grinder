@@ -29,8 +29,7 @@ namespace Grinder.BLL.Services
             IEnumerable<MessageDTO> Messages= mapper.Map<IEnumerable<MessageDTO>>(await unit.Messages.FindMany(d=>d.Sender==mapper.Map<User>(sender) && d.Recivier==mapper.Map<User>(recivier)));
             return Messages;
         }
-        //TODO 
-        //THIS PLS
+        
         public async Task<Dictionary<string,List<MessageDTO>>> GetConversations(UserDTO owner)
         {
             var mapper = new Mapper(config);

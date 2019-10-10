@@ -27,32 +27,39 @@ namespace Grinder.BLL.Services
             this.unit = unit;
         }
 
-        public async Task DeleteImage(int id, IHostingEnvironment _appEnvironment)
+        public async Task DeleteImage(int id, string _appEnvironment)
         {
            Image image= await unit.Images.Get(id);
             var imgName = image.Link.Split('/')[4];
             await unit.Images.Delete(id);
-            File.Delete(_appEnvironment.WebRootPath + "\\Images\\" + imgName);
+            File.Delete(_appEnvironment + "\\Images\\" + imgName);
            unit.Save();
         }
 
-        public async Task DeleteProfilePicture(int id, IHostingEnvironment _appEnvironment)
+        public async Task DeleteProfilePicture(int id, string _appEnvironment)
         {
             Thumbnail profilePic = await unit.Thumbnails.Get(id);
             var imgName = profilePic.Link.Split('/')[4];
             await unit.Thumbnails.Delete(id);
-            File.Delete(_appEnvironment.WebRootPath + "\\Images\\" + imgName);
+            File.Delete(_appEnvironment + "\\Images\\" + imgName);
             unit.Save();
         }
 
-        public async Task UpdateProfilePicture(IHostingEnvironment _appEnviroment, IFormFile newImage, ThumbnailDTO oldImage,string user)
+        public async Task<IEnumerable<ImageDTO>> GetImages(UserDTO user)
+        {
+            var mapper = new Mapper(config);
+            var images=await unit.Images.FindMany(u => u.UserId == mapper.Map<User>(user));
+            return mapper.Map<IEnumerable<ImageDTO>>(images);
+        }
+
+        public async Task UpdateProfilePicture(string _appEnviroment, IFormFile newImage, ThumbnailDTO oldImage,string user)
         {
             var mapper = new Mapper(config);
             var imgName = oldImage.Link.Split('/')[4];
-            File.Delete(_appEnviroment.WebRootPath + "\\Images\\" + imgName);
+            File.Delete(_appEnviroment + "\\Images\\" + imgName);
             var fileName = ContentDispositionHeaderValue.Parse(newImage.ContentDisposition).FileName.Trim('"');
             string path = "/Images/" + fileName;
-            using (var fileStream = new FileStream(_appEnviroment.WebRootPath + path, FileMode.Create))
+            using (var fileStream = new FileStream(_appEnviroment + path, FileMode.Create))
             {
                 await newImage.CopyToAsync(fileStream);
             }
@@ -62,23 +69,20 @@ namespace Grinder.BLL.Services
             
         }
 
-        public async Task UploadImages(IHostingEnvironment _appEnvironment, IFormFile[] images, string Email)
+        public async Task UploadImage(string _appEnvironment, IFormFile image, string Email)
         {
             var mapper = new Mapper(config);
             var tempUser = await unit.Users.Find(d => d.Email == Email);
-            foreach (var image in images)
-            {
-                await UploadImage(_appEnvironment, image, tempUser);
-            }
+            await UploadImage(_appEnvironment, image, tempUser);
             unit.Save();
         }
 
-        public async Task UploadProfilePicture(IHostingEnvironment _appEnvironment, IFormFile image, string Email)
+        public async Task UploadProfilePicture(string _appEnvironment, IFormFile image, string Email)
         {
             var mapper = new Mapper(config);
             var fileName = ContentDispositionHeaderValue.Parse(image.ContentDisposition).FileName.Trim('"');
             string path = "/Images/" + fileName;
-            using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+            using (var fileStream = new FileStream(_appEnvironment + path, FileMode.Create))
             {
                 await image.CopyToAsync(fileStream);
             }
@@ -91,12 +95,12 @@ namespace Grinder.BLL.Services
         }
 
        
-        private async Task UploadImage(IHostingEnvironment _appEnvironment, IFormFile image, User user)
+        private async Task UploadImage(string _appEnvironment, IFormFile image, User user)
         {
             var mapper = new Mapper(config);
             var fileName = ContentDispositionHeaderValue.Parse(image.ContentDisposition).FileName.Trim('"');
             string path = "/Images/" + fileName;
-            using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+            using (var fileStream = new FileStream(_appEnvironment + path, FileMode.Create))
             {
                 await image.CopyToAsync(fileStream);
             }

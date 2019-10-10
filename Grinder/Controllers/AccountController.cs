@@ -72,9 +72,9 @@ namespace Grinder.Controllers
         }
         [Authorize]
         [HttpGet]
-        public async Task<UserModel> Get()
+        public async Task<UpdateProfileModel> Get()
         {
-            return mapper.Map<UserModel>(await userService.GetUserByEmail(User.Identity.Name));
+            return mapper.Map<UpdateProfileModel>(await userService.GetUserByEmail(User.Identity.Name));
         }
         private ClaimsIdentity GetIdentity(string username,string password)
         {
