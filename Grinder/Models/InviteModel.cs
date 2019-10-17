@@ -5,11 +5,9 @@ using System.Threading.Tasks;
 
 namespace Grinder.Models
 {
-    public class FriendsModel
+    public class InviteModel
     {
-        public int Id { get; set; }
-        public ProfileModel Sender { get; set; }
-        public ProfileModel Recivier { get; set; }
+        public ProfileModel Reciveier { get; set; }
         public string Status { get; set; }
     }
 }

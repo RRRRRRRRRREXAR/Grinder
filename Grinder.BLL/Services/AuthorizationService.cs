@@ -207,6 +207,23 @@ namespace Grinder.BLL.Services
             // the plain text value must be correct.
             return (hashValue == expectedHashString);
         }
+
+        public async Task ChangePassword(string Email, string OldPassword, string NewPassword)
+        {
+            var mapper = new Mapper(config);
+
+            var user = await unit.Users.Find(u => u.Email == Email);
+            if (user != null)
+            {
+                if (VerifyHash(OldPassword, "Sha512", user.Password))
+                {
+                    user.Password = ComputeHash(NewPassword, "SHA512", null);
+                    unit.Users.Update(mapper.Map<User>(user));
+                    unit.Save();
+                }
+            }
+            
+        }
     }
 }
 

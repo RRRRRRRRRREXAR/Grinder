@@ -11,5 +11,6 @@ namespace Grinder.BLL.Interfaces
         Task Register(UserDTO user);
         Task<UserDTO> Login(string password,string email);
         Task<UserDTO> GetUserByEmail(string email);
+        Task ChangePassword(string Email,string OldPassword,string NewPassword);
     }
 }

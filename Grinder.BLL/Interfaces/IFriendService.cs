@@ -8,10 +8,11 @@ namespace Grinder.BLL.Interfaces
 {
     public interface IFriendService
     {
-        Task SendInvite(UserDTO sender,UserDTO recivier);
+        Task SendInvite(string senderUsername, string recivierUsername);
         Task AcceptInvite(FriendsDTO friends);
         Task DeclineInvite(FriendsDTO friends);
-        Task Block(FriendsDTO friends);
-        Task<IEnumerable<FriendsDTO>> GetFriends(UserDTO owner);
+        Task Block(UserDTO profile);
+        Task<List<UserDTO>> GetFriends(UserDTO owner);
+        Task<IEnumerable<FriendsDTO>> GetInvites(UserDTO owner);
     }
 }

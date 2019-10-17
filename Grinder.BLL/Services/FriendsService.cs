@@ -36,16 +36,13 @@ namespace Grinder.BLL.Services
             
         }
 
-        public Task Block(FriendsDTO friends)
+        public async Task Block(UserDTO profile)
         {
             var mapper = new Mapper(config);
+            Friends friends = await unit.Friends.Find(f=>f.Sender==mapper.Map<User>(profile) || f.Recivier == mapper.Map<User>(profile));
             friends.Status = "Blocked";
-            Task updateTask = Task.Run(() =>
-            {
-                unit.Friends.Update(mapper.Map<Friends>(friends));
-                unit.Save();
-            });
-            return updateTask;
+            await unit.Friends.Delete(friends.Id);
+            unit.Save();
         }
 
         public Task DeclineInvite(FriendsDTO friends)
@@ -60,24 +57,48 @@ namespace Grinder.BLL.Services
             return updateTask;
         }
 
-        public async Task<IEnumerable<FriendsDTO>> GetFriends(UserDTO owner)
+        public async Task<List<UserDTO>> GetFriends(UserDTO owner)
         {
             var mapper = new Mapper(config);
-            IEnumerable<FriendsDTO> friends= mapper.Map<IEnumerable<FriendsDTO>>(await unit.Friends.FindMany(d=>d.User1 == mapper.Map<User>(owner)));
+            var fef = await unit.Friends.FindMany(d => d.Sender == mapper.Map<User>(owner) || d.Recivier == mapper.Map<User>(owner) && d.Status == "Friends",f=>f.Recivier.ProfileImage,f=>f.Sender.ProfileImage);
+            return mapper.Map<List<UserDTO>>(SortFriends(fef,mapper.Map<User>(owner)));
+        }
+
+        private List<User> SortFriends(List<Friends> frens,User owner)
+        {
+            List<User> sortedFrens = new List<User>();
+            foreach(var fren in frens)
+            {
+                if (fren.Sender.Email!=owner.Email)
+                {
+                    sortedFrens.Add(fren.Sender);
+                }
+                if (fren.Recivier.Email != owner.Email)
+                {
+                    sortedFrens.Add(fren.Recivier);
+                }
+            }
+            return sortedFrens;
+        }
+        public async Task SendInvite(string senderUsername, string recivierUsername)
+        {
+            var mapper = new Mapper(config);
+            await unit.Friends.Create(new Friends
+            {
+                Status = "Pending",
+                Sender = await unit.Users.Find(d => d.Email == senderUsername),
+                Recivier = await unit.Users.Find(d => d.Email == recivierUsername)
+            });
+            unit.Save();
+        }
+
+        public async Task<IEnumerable<FriendsDTO>> GetInvites(UserDTO owner)
+        {
+            var mapper = new Mapper(config);
+            var friends= mapper.Map<IEnumerable<FriendsDTO>>(await unit.Friends.FindMany(d => d.Recivier == mapper.Map<User>(owner) && d.Status == "Pending",d=>d.Sender,d=>d.Sender.ProfileImage));
             return friends;
         }
 
-        public async Task SendInvite(UserDTO sender, UserDTO recivier)
-        {
-            var mapper = new Mapper(config);
-            FriendsDTO friends = new FriendsDTO
-            {
-                Status = "Pending",
-                User1=sender,
-                User2=recivier
-            };
-           await unit.Friends.Create(mapper.Map<Friends>(friends));
-            unit.Save();
-        }
+        
     }
 }

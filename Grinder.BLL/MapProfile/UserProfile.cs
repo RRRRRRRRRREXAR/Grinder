@@ -41,21 +41,21 @@ namespace Grinder.BLL.MapProfile
                 );
             CreateMap<Friends, FriendsDTO>()
                 .ForMember(
-                dest=>dest.User1,
-                opt=>opt.MapFrom(src=>src.User1)
+                dest=>dest.Sender,
+                opt=>opt.MapFrom(src=>src.Sender)
                 )
                 .ForMember(
-                dest=>dest.User2,
-                opt=>opt.MapFrom(src=>src.User2)
+                dest=>dest.Recivier,
+                opt=>opt.MapFrom(src=>src.Recivier)
                 );
             CreateMap<FriendsDTO, Friends>()
                 .ForMember(
-                dest => dest.User1,
-                opt => opt.MapFrom(src => src.User1)
+                dest => dest.Sender,
+                opt => opt.MapFrom(src => src.Sender)
                 )
                 .ForMember(
-                dest => dest.User2,
-                opt => opt.MapFrom(src => src.User2)
+                dest => dest.Recivier,
+                opt => opt.MapFrom(src => src.Recivier)
                 );
             CreateMap<Message, MessageDTO>().
                 ForMember(

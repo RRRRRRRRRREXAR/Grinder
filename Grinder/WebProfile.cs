@@ -68,21 +68,21 @@ namespace Grinder
                 );
             CreateMap<FriendsModel, FriendsDTO>()
                 .ForMember(
-                dest => dest.User1,
-                opt => opt.MapFrom(src => src.User1)
+                dest => dest.Sender,
+                opt => opt.MapFrom(src => src.Sender)
                 )
                 .ForMember(
-                dest => dest.User2,
-                opt => opt.MapFrom(src => src.User2)
+                dest => dest.Recivier,
+                opt => opt.MapFrom(src => src.Recivier)
                 );
             CreateMap<FriendsDTO, FriendsModel>()
                 .ForMember(
-                dest => dest.User1,
-                opt => opt.MapFrom(src => src.User1)
+                dest => dest.Sender,
+                opt => opt.MapFrom(src => src.Sender)
                 )
                 .ForMember(
-                dest => dest.User2,
-                opt => opt.MapFrom(src => src.User2)
+                dest => dest.Recivier,
+                opt => opt.MapFrom(src => src.Recivier)
                 );
             CreateMap<MessageModel, MessageDTO>().
                 ForMember(
@@ -126,6 +126,12 @@ namespace Grinder
                 dest => dest.Viewer,
                 opt => opt.MapFrom(src => src.Viewer)
                 );
+            CreateMap<UserDTO, FindModel>().ForMember(
+                dest => dest.ProfileImage,
+                opt => opt.MapFrom(src => src.ProfileImage));
+            CreateMap<FindModel,UserDTO>().ForMember(
+                dest => dest.ProfileImage,
+                opt => opt.MapFrom(src => src.ProfileImage));
         }
     }
 }

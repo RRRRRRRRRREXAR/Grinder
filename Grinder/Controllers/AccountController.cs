@@ -91,5 +91,12 @@ namespace Grinder.Controllers
             }
             return null;
         }
+        [HttpPost("/changepassword")]
+        [Authorize]
+        public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
+        {
+           await autorizeService.ChangePassword(User.Identity.Name,model.OldPassword,model.NewPassword);
+            return Ok();
+        }
     }
 }

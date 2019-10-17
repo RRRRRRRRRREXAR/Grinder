@@ -36,7 +36,7 @@ namespace Grinder
         public void ConfigureServices(IServiceCollection services)
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<GrinderContext>(options => options.UseSqlServer(connection));
+            services.AddDbContext<GrinderContext>(options => options.UseSqlServer(connection).EnableSensitiveDataLogging());
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IAutharizationService, AuthorizationService>();
             services.AddTransient<IDataService, DataService>();

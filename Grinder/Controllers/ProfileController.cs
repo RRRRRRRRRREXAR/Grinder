@@ -39,6 +39,7 @@ namespace Grinder.Controllers
            return mapper.Map<ProfileModel>(await userService.GetUserByEmail(Email));
         }
 
+       
         
     }
 }

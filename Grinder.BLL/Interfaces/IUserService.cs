@@ -11,6 +11,7 @@ namespace Grinder.BLL.Interfaces
     public interface IUserService
     {
         Task<UserDTO> GetUserByEmail(string Email);
+        Task<UserDTO> GetUserByEmailAsNoTracking(string Email);
         Task UpdateProfile(UserDTO user);
     }
 }
