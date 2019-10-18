@@ -11,11 +11,6 @@ namespace Grinder.Hubs
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ChatHub:Hub
     {
-        public async Task NewMessage(string username,string message)
-        {
-            await Clients.All.SendAsync("messageRecivied",username,message);
-        }
-
         public async Task Send(string message,string to)
         {
             var userName = Context.User.Identity.Name;

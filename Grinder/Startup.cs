@@ -55,7 +55,7 @@ namespace Grinder
             services.AddTransient<IFriendService, FriendService>();
             services.AddTransient<IImageService, ImageService>();
             services.AddTransient<IUserService, UserService>();
-            services.AddScoped<IUserIdProvider, CustomUserIdProvider>();
+            services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
             services.AddTransient<IMessageService, MessageService>();
             var mapConfig = new MapperConfiguration(mc =>
             {
