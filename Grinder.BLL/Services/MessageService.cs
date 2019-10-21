@@ -37,10 +37,13 @@ namespace Grinder.BLL.Services
             return SortMessages(mapper.Map<List<MessageDTO>>(AllMessages),owner);
         }
 
-        public async Task SendMessage(MessageDTO message)
+        public async Task SendMessage(MessageDTO message,string Reciver,string Sender)
         {
             var mapper = new Mapper(config);
-            await unit.Messages.Create(mapper.Map<Message>(message));
+            var msg = mapper.Map<Message>(message);
+            msg.Recivier = await unit.Users.Find(u=>u.Email==Reciver);
+            msg.Sender = await unit.Users.Find(u => u.Email == Sender);
+            await unit.Messages.Create(msg);
             unit.Save();
         }
 
